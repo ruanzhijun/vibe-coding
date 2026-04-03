@@ -1,6 +1,6 @@
 # Kiro 项目级配置清单
 
-Kiro 的项目级配置不是“一个总配置文件包打天下”，而是一个多入口目录体系。
+Kiro 的项目级配置不是一个总配置文件，而是一个多入口目录体系。
 
 如果你把 Kiro 当成项目级 vibe coding 工具，当前最值得优先掌握的是：
 
@@ -8,6 +8,7 @@ Kiro 的项目级配置不是“一个总配置文件包打天下”，而是一
 - `AGENTS.md`
 - `.kiro/settings/mcp.json`
 - `.kiro/skills/*/SKILL.md`
+- `.kiro/prompts/*.md`
 
 推荐结构如下：
 
@@ -22,9 +23,11 @@ repo/
    │  └─ api-standards.md
    ├─ settings/
    │  └─ mcp.json
-   └─ skills/
-      └─ pr-review/
-         └─ SKILL.md
+   ├─ skills/
+   │  └─ pr-review/
+   │     └─ SKILL.md
+   └─ prompts/
+      └─ release-check.md
 ```
 
 ## 1. `.kiro/steering/*.md`
@@ -70,6 +73,19 @@ Kiro 的 steering 文件支持 frontmatter 控制加载方式。
 - `inclusion: always`
 - `inclusion: fileMatch`
 - `inclusion: manual`
+- `inclusion: auto`
+
+这意味着 steering 不只是项目文档，而是真正的项目级规则系统。
+
+### 1.5 文件引用
+
+Kiro 当前官方文档还明确支持在 steering 文件里引用工作区文件：
+
+```md
+#[[file:api/openapi.yaml]]
+```
+
+这让 steering 可以直接绑定 repo 里的活文档，而不需要复制内容。
 
 ## 2. `AGENTS.md`
 
@@ -146,9 +162,49 @@ Kiro 官方当前明确支持通过 `AGENTS.md` 提供 steering directives。
 - 数据迁移流程
 - 项目专属代码生成流程
 
-## 5. 需要特别说明的几类能力
+### 4.2 最关键的字段
 
-### 5.1 Custom agents
+当前官方文档能明确确认的关键元数据是：
+
+- `name`
+- `description`
+
+其中 `description` 直接影响 Kiro 何时自动激活这个 skill。
+
+## 5. `.kiro/prompts/*.md`
+
+这是 Kiro CLI 当前正式支持的本地项目 prompts 目录。
+
+这一点是上一版遗漏最明显的地方之一。
+
+官方当前文档明确说明：
+
+- 本地 workspace prompts 存在 `.kiro/prompts/`
+- 全局 prompts 存在 `~/.kiro/prompts/`
+- 本地优先级高于全局和 MCP prompts
+
+### 5.1 它负责什么
+
+适合放：
+
+- 高频复用 prompt
+- 发布前检查 prompt
+- 项目 onboarding prompt
+- 文档生成 prompt
+- review prompt
+
+### 5.2 它怎么使用
+
+当前官方文档说明：
+
+- 通过 `/prompts` 管理
+- 通过 `@prompt-name` 在聊天中调用
+
+所以 `.kiro/prompts/*.md` 本质上是项目级可复用 prompt 资产。
+
+## 6. 需要特别说明的几类能力
+
+### 6.1 Custom agents
 
 Kiro CLI 支持 custom agents，并且 agent 配置本身是 JSON 文件。
 
@@ -156,21 +212,41 @@ Kiro CLI 支持 custom agents，并且 agent 配置本身是 JSON 文件。
 
 - `~/.kiro/agents/`
 
-也就是说它默认是用户级，不是固定的标准项目目录。
+也就是说：
 
-### 5.2 Hooks
+- 它默认是用户级
+- 不是当前最标准的项目级主入口
+
+### 6.2 Hooks
 
 Kiro IDE 有 hooks，CLI 也有 hooks。
 
 但当前要注意：
 
-- IDE hooks 更偏 UI 管理
-- CLI hooks 是写在 agent 配置里的
-- 官方当前并没有提供一个像 `.kiro/hooks.json` 这样的统一项目文件作为主入口
+- IDE hooks 是 Kiro 的核心能力之一
+- CLI hooks 是定义在 agent configuration 里的
+- 官方当前并没有提供一个像 `.kiro/hooks.json` 这样的标准项目主文件
 
-## 6. 最推荐的目录方案
+因此从“项目级配置文件”角度，Kiro 目前最稳的主线仍然是：
 
-### 6.1 最小必备版
+1. steering
+2. `AGENTS.md`
+3. MCP
+4. skills
+5. prompts
+
+### 6.3 Powers
+
+Kiro 现在已经有 Powers 体系，但 powers 的安装、分发和启用主要通过 IDE / marketplace / GitHub URL 进行，并不是一个约定俗成的项目根固定配置文件机制。
+
+所以在“项目级配置文件清单”里，powers 应该理解为：
+
+- 相关生态能力
+- 不是当前最标准的 repo 内主配置文件
+
+## 7. 最推荐的目录方案
+
+### 7.1 最小必备版
 
 ```text
 repo/
@@ -182,7 +258,7 @@ repo/
       └─ structure.md
 ```
 
-### 6.2 标准实用版
+### 7.2 标准实用版
 
 ```text
 repo/
@@ -195,12 +271,14 @@ repo/
    │  └─ testing-standards.md
    ├─ settings/
    │  └─ mcp.json
-   └─ skills/
-      └─ pr-review/
-         └─ SKILL.md
+   ├─ skills/
+   │  └─ pr-review/
+   │     └─ SKILL.md
+   └─ prompts/
+      └─ release-check.md
 ```
 
-### 6.3 进阶版
+### 7.3 进阶版
 
 ```text
 repo/
@@ -215,33 +293,40 @@ repo/
    │  └─ deployment-workflow.md
    ├─ settings/
    │  └─ mcp.json
-   └─ skills/
-      ├─ pr-review/
-      │  └─ SKILL.md
-      └─ deploy/
-         └─ SKILL.md
+   ├─ skills/
+   │  ├─ pr-review/
+   │  │  └─ SKILL.md
+   │  └─ deploy/
+   │     └─ SKILL.md
+   └─ prompts/
+      ├─ release-check.md
+      └─ docs-audit.md
 ```
 
-## 7. 一句话理解每类文件
+## 8. 一句话理解每类文件
 
 - `.kiro/steering/*.md`：Kiro 项目级长期规则与知识
 - `AGENTS.md`：Kiro 支持的通用 steering 文件
 - `.kiro/settings/mcp.json`：项目级 MCP 配置
 - `.kiro/skills/*/SKILL.md`：项目级可复用工作流
+- `.kiro/prompts/*.md`：项目级本地复用 prompt
 
-## 8. 推荐的落地顺序
+## 9. 推荐的落地顺序
 
 1. 先写 `.kiro/steering/product.md`
 2. 再补 `tech.md` 和 `structure.md`
 3. 再加根目录 `AGENTS.md`
 4. 再补 `.kiro/settings/mcp.json`
-5. 最后沉淀 `.kiro/skills/*/SKILL.md`
+5. 再沉淀 `.kiro/skills/*/SKILL.md`
+6. 最后再补 `.kiro/prompts/*.md`
 
-## 9. 官方参考
+## 10. 官方参考
 
 - [Kiro Steering (IDE)](https://kiro.dev/docs/steering/)
 - [Kiro Steering (CLI)](https://kiro.dev/docs/cli/steering/)
 - [Kiro MCP configuration (IDE)](https://kiro.dev/docs/mcp/configuration/)
 - [Kiro MCP configuration (CLI)](https://kiro.dev/docs/cli/mcp/configuration/)
 - [Kiro Agent Skills (CLI)](https://kiro.dev/docs/cli/skills/)
+- [Kiro Manage Prompts (CLI)](https://kiro.dev/docs/cli/chat/manage-prompts/)
 - [Kiro Custom Agents (CLI)](https://kiro.dev/docs/cli/custom-agents/)
+- [Kiro Powers (IDE)](https://kiro.dev/docs/powers/)

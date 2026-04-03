@@ -1,17 +1,19 @@
 # Cursor 项目级配置清单
 
-本文整理 Cursor 当前与“项目级配置”最相关的几类文件，重点回答 3 个问题：
+本文按 Cursor 当前官方公开文档，重新整理一份更完整的项目级配置清单，重点回答 3 个问题：
 
-- Cursor 项目里应该放哪些配置文件
+- Cursor 项目里到底应该放哪些文件
 - 每个文件分别负责什么
-- 哪些属于当前主线，哪些已经进入 legacy 轨道
+- 哪些是当前主线，哪些已经属于 legacy
 
-先给结论：如果你把 Cursor 当成项目级 vibe coding 工具，当前最应该优先掌握的是这 4 类文件。
+先给结论：如果你把 Cursor 当成项目级 vibe coding 工具，当前最应该优先掌握的是这 6 类文件。
 
 ```text
 repo/
 ├─ AGENTS.md
-├─ .cursorrules                  # 旧单文件规则，老项目兼容
+├─ .cursorrules                  # 旧单文件规则，兼容但不推荐新建
+├─ .cursorignore
+├─ .cursorindexingignore
 └─ .cursor/
    ├─ rules/
    │  ├─ project.mdc
@@ -25,20 +27,24 @@ repo/
 - `AGENTS.md`
 - `.cursor/rules/*.mdc`
 - `.cursor/cli.json`
+- `.cursorignore`
+- `.cursorindexingignore`
 
-`.cursorrules` 仍然兼容，但已经是 legacy 入口。
+`.cursorrules` 仍然兼容，但已经是 legacy。
 
-## 1. Cursor 的项目级配置分成两套
+## 1. Cursor 的项目级配置分成三层
 
-Cursor 现在要分成两套理解：
+当前最好把 Cursor 的项目级配置理解成三层：
 
-1. 编辑器里 Agent / Inline Edit 使用的项目规则体系
-2. Cursor CLI 使用的项目级 CLI 配置体系
+1. 项目规则
+2. 文件访问与索引边界
+3. CLI 项目权限
 
-这两套配置都能放进仓库，但职责不同：
+分别对应：
 
-- `.cursor/rules/*.mdc` 和 `AGENTS.md` 解决“AI 在项目里应该怎么做”
-- `.cursor/cli.json` 解决“CLI 在这个项目里允许做什么”
+- `.cursor/rules/*.mdc`、`AGENTS.md`、`.cursorrules`
+- `.cursorignore`、`.cursorindexingignore`
+- `.cursor/cli.json`
 
 ## 2. `.cursor/rules/*.mdc`
 
@@ -63,16 +69,52 @@ Cursor 现在要分成两套理解：
 - 代码生成边界
 - 提交前检查要求
 
-### 2.2 为什么它比 `.cursorrules` 更好
+### 2.2 Rule anatomy
 
-相较旧的 `.cursorrules`：
+官方当前文档明确说明，每个规则文件都是 `.mdc`，核心元数据围绕这 3 个字段：
 
-- 更适合拆分
-- 更适合多人协作
-- 可见性更高
-- 更容易做目录和主题分层
+- `description`
+- `globs`
+- `alwaysApply`
 
-所以新项目应优先用 `.cursor/rules/*.mdc`，不要再以 `.cursorrules` 为主。
+它们对应的是：
+
+- `description`：给 Agent Requested 类型的规则做语义说明
+- `globs`：路径匹配
+- `alwaysApply`：是否始终附加
+
+### 2.3 当前 4 种 rule type
+
+Cursor 当前官方文档明确列出 4 种规则类型：
+
+- `Always`
+- `Auto Attached`
+- `Agent Requested`
+- `Manual`
+
+对应理解如下：
+
+- `Always`：总是进入模型上下文
+- `Auto Attached`：命中 `globs` 时自动附加
+- `Agent Requested`：AI 自己决定要不要拉进上下文，必须写 `description`
+- `Manual`：只有显式 `@ruleName` 才启用
+
+### 2.4 Nested rules
+
+Cursor 当前文档还明确支持嵌套规则目录。
+
+也就是说你不一定只能在项目根放一份：
+
+```text
+project/
+├─ .cursor/rules/
+├─ backend/
+│  └─ .cursor/rules/
+└─ frontend/
+   └─ .cursor/rules/
+```
+
+这对 monorepo 或前后端混合仓库很重要。
 
 ## 3. `AGENTS.md`
 
@@ -83,7 +125,7 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 - 一个纯 Markdown 文件
 - 放在项目根目录
 - 不需要复杂元数据
-- 适合“项目说明比较简单”的仓库
+- 适合项目说明比较简单的仓库
 
 适合写的内容：
 
@@ -97,7 +139,7 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 
 根据 Cursor 官方当前说明：
 
-- `AGENTS.md` 现在是“简单替代方案”
+- `AGENTS.md` 现在是简单替代方案
 - 当前限制是项目根级单文件、全局生效
 - 如果你需要更细粒度、可拆分、可扩展的项目规则，还是应该用 `.cursor/rules/*.mdc`
 
@@ -106,7 +148,7 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 - CLI 也会读取项目根的 `AGENTS.md`
 - 同时也会读取项目根的 `CLAUDE.md`
 
-这使得 `AGENTS.md` 很适合做跨工具共享的“中性项目说明文件”。
+这使得 `AGENTS.md` 很适合做跨工具共享的中性项目说明文件。
 
 ## 4. `.cursorrules`
 
@@ -122,7 +164,82 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 - 新项目不要再以它为主
 - 有条件就迁移到 `.cursor/rules/*.mdc`
 
-## 5. `.cursor/cli.json`
+## 5. `.cursorignore`
+
+这是 Cursor 当前非常重要，但很多文档会漏掉的项目级文件。
+
+官方当前文档明确说明：
+
+- 把 `.cursorignore` 放在项目根
+- 它控制 Cursor 能访问哪些文件
+
+### 5.1 它会阻止什么
+
+被 `.cursorignore` 命中的内容，会被阻止用于：
+
+- codebase indexing
+- Tab / Agent / Inline Edit 可访问代码
+- `@` 文件引用
+
+### 5.2 它不会阻止什么
+
+官方文档也明确提醒：
+
+- Agent 触发的 terminal 和 MCP tool calls，不受 `.cursorignore` 完全约束
+
+因此不能把 `.cursorignore` 误认为绝对安全边界。
+
+### 5.3 它适合放什么
+
+最适合放：
+
+- `.env`
+- 密钥文件
+- 凭据
+- 大型无关目录
+- 不希望被 AI 读取的敏感模板
+
+### 5.4 语法和层级
+
+官方明确说明它使用 `.gitignore` 语法，并且还支持：
+
+- 注释
+- `!` 反向匹配
+- 可选启用 hierarchical ignore，从父目录继续找 `.cursorignore`
+
+## 6. `.cursorindexingignore`
+
+这是另一个容易漏掉的项目级文件。
+
+官方当前文档明确说明：
+
+- `.cursorindexingignore` 只影响 indexing
+- 被它排除的文件仍然可以被其他 AI 功能访问
+
+所以它和 `.cursorignore` 的边界非常不同。
+
+### 6.1 它适合什么场景
+
+最适合：
+
+- 大体积日志
+- 大量生成文件
+- 不需要参与 codebase search 的资产
+- 想减少 embeddings / indexing 体积，但不想完全屏蔽 AI 读取的内容
+
+### 6.2 一个常见误区
+
+如果你的目标是：
+
+- 不让 Agent 读到敏感文件
+
+那应该优先用：
+
+- `.cursorignore`
+
+而不是 `.cursorindexingignore`。
+
+## 7. `.cursor/cli.json`
 
 这是 Cursor CLI 的项目级配置文件。
 
@@ -131,14 +248,14 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 - 全局文件是 `~/.cursor/cli-config.json`
 - 项目级文件是 `<project>/.cursor/cli.json`
 
-### 5.1 它能配置什么
+### 7.1 它能配置什么
 
 官方当前说明里最关键的一点是：
 
-- 项目级只能配置 permissions
+- 项目级只能配置 `permissions`
 - 其他 CLI 设置都必须走全局配置
 
-### 5.2 典型字段
+### 7.2 典型字段
 
 项目级最重要的字段包括：
 
@@ -146,28 +263,33 @@ Cursor 官方当前把 `AGENTS.md` 视为 `.cursor/rules` 的简化替代。
 - `permissions.allow`
 - `permissions.deny`
 
-所以从团队落地角度看，`.cursor/cli.json` 最适合做：
+因此 `.cursor/cli.json` 最适合做：
 
 - 允许哪些命令
 - 禁止哪些命令
 - 当前仓库的最小 CLI 权限边界
 
-## 6. 最推荐的职责分工
+## 8. 最推荐的职责分工
 
-### 6.1 简单项目
+### 8.1 最小必备版
 
 ```text
 repo/
 ├─ AGENTS.md
+├─ .cursorignore
 └─ .cursor/
+   ├─ rules/
+   │  └─ project.mdc
    └─ cli.json
 ```
 
-### 6.2 标准项目
+### 8.2 标准实用版
 
 ```text
 repo/
 ├─ AGENTS.md
+├─ .cursorignore
+├─ .cursorindexingignore
 └─ .cursor/
    ├─ rules/
    │  ├─ project.mdc
@@ -176,35 +298,41 @@ repo/
    └─ cli.json
 ```
 
-### 6.3 旧项目兼容
+### 8.3 旧项目兼容版
 
 ```text
 repo/
 ├─ AGENTS.md
 ├─ .cursorrules
+├─ .cursorignore
 └─ .cursor/
    ├─ rules/
    │  └─ project.mdc
    └─ cli.json
 ```
 
-## 7. 一句话理解每类文件
+## 9. 一句话理解每类文件
 
 - `AGENTS.md`：最简单的项目级 Agent 说明文件
 - `.cursor/rules/*.mdc`：当前主线的项目规则体系
 - `.cursorrules`：旧单文件规则，兼容但不建议新建
+- `.cursorignore`：阻止 AI 访问与索引的忽略文件
+- `.cursorindexingignore`：只影响 indexing 的忽略文件
 - `.cursor/cli.json`：Cursor CLI 的项目级权限配置
 
-## 8. 推荐的落地顺序
+## 10. 推荐的落地顺序
 
 1. 先写 `AGENTS.md`
 2. 再拆成 `.cursor/rules/*.mdc`
-3. 再补 `.cursor/cli.json`
-4. 最后清理旧的 `.cursorrules`
+3. 再补 `.cursorignore`
+4. 再按需要加 `.cursorindexingignore`
+5. 最后补 `.cursor/cli.json`
 
-## 9. 官方参考
+## 11. 官方参考
 
-- [Cursor Rules](https://docs.cursor.com/context/rules)
-- [Cursor Context](https://docs.cursor.com/en/context)
+- [Cursor Rules](https://docs.cursor.com/en/context/rules)
+- [Cursor Context / AGENTS.md](https://docs.cursor.com/en/context)
+- [Cursor Ignore Files](https://docs.cursor.com/en/context/ignore-files)
+- [Cursor Codebase Indexing](https://docs.cursor.com/en/context/codebase-indexing)
 - [Cursor CLI Configuration](https://docs.cursor.com/en/cli/reference/configuration)
 - [Cursor CLI Using](https://docs.cursor.com/en/cli/using)

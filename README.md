@@ -23,12 +23,12 @@
 ### Cursor
 
 - [Cursor 项目级配置清单](./cursor-project-config-guide.md)
-  说明 `AGENTS.md`、`.cursor/rules/*.mdc`、`.cursor/cli.json` 和 `.cursorrules` 各自的职责、当前推荐关系，以及 Cursor CLI 项目级权限配置的边界。
+  说明 `AGENTS.md`、`.cursor/rules/*.mdc`、`.cursorignore`、`.cursorindexingignore`、`.cursor/cli.json` 和 `.cursorrules` 各自的职责、当前推荐关系，以及 Cursor CLI 项目级权限配置的边界。
 
 ### Gemini CLI
 
 - [Gemini CLI 项目级配置清单](./gemini-cli-project-config-guide.md)
-  说明 `GEMINI.md`、`.gemini/settings.json`、`.gemini/.env`、sandbox 文件和 `system.md` 等项目文件分别负责什么。
+  说明 `GEMINI.md`、`.gemini/settings.json`、`.geminiignore`、`.gemini/.env`、sandbox 文件和 `system.md` 等项目文件分别负责什么，并补充新版 schema 下的重要配置分类。
 
 ### GitHub Copilot
 
@@ -43,7 +43,7 @@
 ### Kiro
 
 - [Kiro 项目级配置清单](./kiro-project-config-guide.md)
-  说明 `.kiro/steering/*.md`、`AGENTS.md`、`.kiro/settings/mcp.json`、`.kiro/skills/*/SKILL.md` 等项目文件的职责与优先级。
+  说明 `.kiro/steering/*.md`、`AGENTS.md`、`.kiro/settings/mcp.json`、`.kiro/skills/*/SKILL.md`、`.kiro/prompts/*.md` 等项目文件的职责与优先级。
 
 ### Aider
 
@@ -53,7 +53,7 @@
 ### Cline
 
 - [Cline 项目级配置清单](./cline-project-config-guide.md)
-  说明 `.clinerules/`、`.clineignore`、`AGENTS.md` 以及对 `.cursorrules`、`.windsurfrules` 的兼容关系。
+  说明 `.clinerules/`、`.clineignore`、`.cline/skills/`、`.clinerules/workflows/`、`.clinerules/hooks/`、`AGENTS.md` 以及对 `.cursorrules`、`.windsurfrules` 的兼容关系。
 
 ### Roo Code
 
@@ -63,4 +63,4 @@
 ### Continue
 
 - [Continue 项目级配置清单](./continue-project-config-guide.md)
-  说明 Continue 当前为什么以用户级 `config.yaml` 为主、`.continuerc.json` 与 `config.json` 为什么属于 legacy / deprecated，以及项目级配置应如何理解。
+  说明 Continue 当前的项目本地 `rules / mcpServers / checks` 目录，以及为什么 `config.yaml` 仍是主配置、`.continuerc.json` 与 `config.json` 又为什么属于 legacy / deprecated。
