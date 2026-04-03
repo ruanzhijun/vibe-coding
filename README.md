@@ -1,43 +1,66 @@
-﻿# Vibe Coding
+# Vibe Coding
 
 这个仓库用于沉淀和整理与 vibe coding 相关的文档、规范、模板和实践记录。
 
+当前目录结构按“**一个工具一份项目级配置文档**”组织，优先解决：
+
+- 这个工具有哪些项目级配置文件
+- 每个文件分别负责什么
+- 哪些是当前主线，哪些已经 deprecated 或只适合兼容理解
+
 ## 目录
-
-### 总览
-
-- [主流 Vibe Coding 工具项目级配置文件总览](./all-vibe-coding-project-config-guide.md)
-  按截至 2026-04-03 的官方公开资料，汇总 Codex、Claude Code、Cursor、Gemini CLI、GitHub Copilot、Windsurf、Kiro、Aider、Cline、Roo Code、Continue 等工具的项目级配置文件入口、职责和当前状态。
 
 ### Codex
 
 - [Codex 项目级配置清单](./codex-project-config-guide.md)
-  说明 `.codex` 目录下建议放哪些文件、每类文件分别负责什么，以及常见关键配置项。
+  说明 `AGENTS.md`、`.codex/config.toml`、`.codex/rules/*.rules`、`.codex/hooks.json`、`.codex/agents/*.toml`、`.agents/skills/**/SKILL.md` 等项目级入口的职责与边界。
 
-### Claude
+### Claude Code
 
 - [Claude 项目级配置清单](./claude-project-config-guide.md)
-  说明 Claude Code 用作 vibe coding 工具时，项目里建议准备哪些配置文件、各自作用是什么，以及关键配置项如何分层。
+  说明 `CLAUDE.md`、`.claude/settings.json`、`.claude/settings.local.json`、`.mcp.json`、`.claude/agents/*.md`、`.claude/skills/**/SKILL.md` 等项目级入口的职责与当前推荐关系。
 
-## 计划中的内容
+### Cursor
 
-后续可以继续补充：
+- [Cursor 项目级配置清单](./cursor-project-config-guide.md)
+  说明 `AGENTS.md`、`.cursor/rules/*.mdc`、`.cursor/cli.json` 和 `.cursorrules` 各自的职责、当前推荐关系，以及 Cursor CLI 项目级权限配置的边界。
 
-- `AGENTS.md` 模板
-- `.codex/config.toml` 模板
-- `.codex/rules/*.rules` 模板
-- `.codex/hooks.json` 模板
-- `.codex/agents/*.toml` 模板
-- `.agents/skills/` 模板
-- 不同技术栈的项目级落地示例
+### Gemini CLI
 
-## 使用方式
+- [Gemini CLI 项目级配置清单](./gemini-cli-project-config-guide.md)
+  说明 `GEMINI.md`、`.gemini/settings.json`、`.gemini/.env`、sandbox 文件和 `system.md` 等项目文件分别负责什么。
 
-可以把这个仓库当作个人或团队的 vibe coding 知识库：
+### GitHub Copilot
 
-- 文档层：沉淀最佳实践和配置说明
-- 模板层：沉淀可直接复用的配置文件
-- 项目层：为不同仓库复制或裁剪一套合适的 Codex 配置
+- [GitHub Copilot 项目级配置清单](./github-copilot-project-config-guide.md)
+  说明 `.github/copilot-instructions.md`、`.github/instructions/*.instructions.md`、`.github/prompts/*.prompt.md`、`AGENTS.md` 等仓库内配置入口的职责与边界。
 
+### Windsurf
 
+- [Windsurf 项目级配置清单](./windsurf-project-config-guide.md)
+  说明 `.windsurf/rules/*.md`、`AGENTS.md`、`.codeiumignore` 三类文件如何分工，以及哪些配置仍属于用户级 settings。
 
+### Kiro
+
+- [Kiro 项目级配置清单](./kiro-project-config-guide.md)
+  说明 `.kiro/steering/*.md`、`AGENTS.md`、`.kiro/settings/mcp.json`、`.kiro/skills/*/SKILL.md` 等项目文件的职责与优先级。
+
+### Aider
+
+- [Aider 项目级配置清单](./aider-project-config-guide.md)
+  说明 `.aider.conf.yml`、`.aiderignore`、`.aider.model.settings.yml`、`.aider.model.metadata.json` 和 `.env` 在项目中的作用。
+
+### Cline
+
+- [Cline 项目级配置清单](./cline-project-config-guide.md)
+  说明 `.clinerules/`、`.clineignore`、`AGENTS.md` 以及对 `.cursorrules`、`.windsurfrules` 的兼容关系。
+
+### Roo Code
+
+- [Roo Code 项目级配置清单](./roo-code-project-config-guide.md)
+  说明 `AGENTS.md`、`.roomodes`、`.roorules`、`.roo/mcp.json` 等 Roo Code 项目文件的职责与安全边界。
+
+### Continue
+
+- [Continue 项目级配置清单](./continue-project-config-guide.md)
+  说明 Continue 当前为什么以用户级 `config.yaml` 为主、`.continuerc.json` 与 `config.json` 为什么属于 legacy / deprecated，以及项目级配置应如何理解。
