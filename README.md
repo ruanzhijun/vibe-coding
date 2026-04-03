@@ -4,6 +4,11 @@
 
 ## 目录
 
+### 总览
+
+- [主流 Vibe Coding 工具项目级配置文件总览](./all-vibe-coding-project-config-guide.md)
+  按截至 2026-04-03 的官方公开资料，汇总 Codex、Claude Code、Cursor、Gemini CLI、GitHub Copilot、Windsurf、Kiro、Aider、Cline、Roo Code、Continue 等工具的项目级配置文件入口、职责和当前状态。
+
 ### Codex
 
 - [Codex 项目级配置清单](./codex-project-config-guide.md)
