@@ -2,12 +2,7 @@
 
 这个仓库用于沉淀和整理与 vibe coding 相关的文档、规范、模板和实践记录。
 
-## 目录
-
-### Codex
-
-- [Codex 项目级配置清单](./codex-project-config-guide.md)
-  说明 `.codex` 目录下建议放哪些文件、每类文件分别负责什么，以及常见关键配置项。
+## 目录`r`n`r`n### Codex`r`n`r`n- [Codex 项目级配置清单](./codex-project-config-guide.md)`r`n  说明 `.codex` 目录下建议放哪些文件、每类文件分别负责什么，以及常见关键配置项。`r`n`r`n### Claude`r`n`r`n- [Claude 项目级配置清单](./claude-project-config-guide.md)`r`n  说明 Claude Code 用作 vibe coding 工具时，项目里建议准备哪些配置文件、各自作用是什么，以及关键配置项如何分层。
 
 ## 计划中的内容
 
@@ -28,5 +23,6 @@
 - 文档层：沉淀最佳实践和配置说明
 - 模板层：沉淀可直接复用的配置文件
 - 项目层：为不同仓库复制或裁剪一套合适的 Codex 配置
+
 
 
