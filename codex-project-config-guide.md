@@ -518,16 +518,16 @@ repo/
 
 官方文档可对照：
 
-- Config basics: https://developers.openai.com/codex/config-basic
-- Advanced config: https://developers.openai.com/codex/config-advanced
-- Config reference: https://developers.openai.com/codex/config-reference
-- Config schema: https://developers.openai.com/codex/config-schema.json
-- Rules: https://developers.openai.com/codex/rules
-- Hooks: https://developers.openai.com/codex/hooks
-- Subagents: https://developers.openai.com/codex/subagents
-- MCP: https://developers.openai.com/codex/mcp
-- Skills: https://developers.openai.com/codex/skills
-- Introducing Codex: https://openai.com/index/introducing-codex/
+- <a href="https://developers.openai.com/codex/config-basic" target="_blank" rel="noopener noreferrer">Config basics</a>
+- <a href="https://developers.openai.com/codex/config-advanced" target="_blank" rel="noopener noreferrer">Advanced config</a>
+- <a href="https://developers.openai.com/codex/config-reference" target="_blank" rel="noopener noreferrer">Config reference</a>
+- <a href="https://developers.openai.com/codex/config-schema.json" target="_blank" rel="noopener noreferrer">Config schema</a>
+- <a href="https://developers.openai.com/codex/rules" target="_blank" rel="noopener noreferrer">Rules</a>
+- <a href="https://developers.openai.com/codex/hooks" target="_blank" rel="noopener noreferrer">Hooks</a>
+- <a href="https://developers.openai.com/codex/subagents" target="_blank" rel="noopener noreferrer">Subagents</a>
+- <a href="https://developers.openai.com/codex/mcp" target="_blank" rel="noopener noreferrer">MCP</a>
+- <a href="https://developers.openai.com/codex/skills" target="_blank" rel="noopener noreferrer">Skills</a>
+- <a href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer">Introducing Codex</a>
 
 ## 13. 最后的建议
 
@@ -538,3 +538,4 @@ repo/
 - `.codex/rules/default.rules`
 
 这三样稳定后，再逐步补 hooks、skills、subagents，Codex 才会真正从“能用”进入“高效可控”。
+
