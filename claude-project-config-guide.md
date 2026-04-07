@@ -1,6 +1,6 @@
 ﻿# Claude 项目级配置清单
 
-本文用和 `codex-project-config-guide.md` 一样的思路，系统整理一套适合 **Claude Code 作为 vibe coding 工具** 时的项目级配置方案，重点回答 3 个问题：
+本文系统整理一套适合 **Claude Code 作为 vibe coding 工具** 时的项目级配置方案，重点回答 3 个问题：
 
 - 项目里应该放哪些 Claude 相关配置文件
 - 每个文件分别负责什么
